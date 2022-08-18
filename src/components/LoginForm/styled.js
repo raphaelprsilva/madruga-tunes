@@ -22,6 +22,16 @@ export const FormWrapper = styled.form`
     box-shadow: 0 7.5px 12.5px rgb(0 0 0 / 20%);
   }
 
+  @media (max-width: 800px) {
+    width: 453px;
+    height: 314px;
+  }
+
+  @media (max-width: 467px) {
+    width: 295px;
+    height: 314px;
+  }
+
   input {
     padding: 0.5rem 1rem;
     border: 1px solid #eaeaea;
@@ -36,6 +46,16 @@ export const FormWrapper = styled.form`
     height: 45px;
     left: 454px;
     top: 525px;
+
+    @media (max-width: 800px) {
+      width: 350px;
+      height: 45px;
+    }
+
+    @media (max-width: 467px) {
+      width: 251px;
+      height: 45px;
+    }
   }
 
   input:focus {
@@ -61,6 +81,16 @@ export const FormWrapper = styled.form`
     color: #ffffff;
     border: none;
     transition: background-color 0.5s ease;
+
+    @media (max-width: 800px) {
+      width: 350px;
+      height: 45px;
+    }
+
+    @media (max-width: 467px) {
+      width: 251px;
+      height: 45px;
+    }
 
     :hover {
       background-color: #06c96c;
