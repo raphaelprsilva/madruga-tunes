@@ -7,18 +7,22 @@ import * as S from './styled';
 
 import Image from '../Image';
 import User from '../User';
+import Links from '../Links';
 
 class Header extends Component {
   render() {
     const { user } = this.props;
     return (
-      <S.HeaderWrapper data-testid="header-component">
-        <Image
-          imageSrc={ madrugraTunesLogo }
-          imageAlt="Logo Madruga Tunes White"
-        />
-        <User user={ user } />
-      </S.HeaderWrapper>
+      <>
+        <S.HeaderWrapper data-testid="header-component">
+          <Image
+            imageSrc={ madrugraTunesLogo }
+            imageAlt="Logo Madruga Tunes White"
+          />
+          <User user={ user } />
+        </S.HeaderWrapper>
+        <Links />
+      </>
     );
   }
 }
