@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
-import { Header, Loading } from '../../components';
+import { Header, Loading, SearchForm } from '../../components';
 import { getUser } from '../../services/userAPI';
+
+const MIN_SEARCH_LENGTH = 2;
 
 class Search extends Component {
   mounted = false;
@@ -12,7 +14,11 @@ class Search extends Component {
     this.state = {
       loading: false,
       user: {},
+      inputSearch: '',
+      searchButtonDisabled: true,
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -27,16 +33,42 @@ class Search extends Component {
     this.mounted = false;
   }
 
+  handleChange(event) {
+    const { target } = event;
+    this.updateState(target.name, target.value);
+  }
+
+  updateState(name, value) {
+    this.setState({
+      [name]: value,
+    }, () => this.validateField(value));
+  }
+
+  validateField(value) {
+    const isSearchFieldValid = value.length >= MIN_SEARCH_LENGTH;
+
+    this.setState({
+      searchButtonDisabled: !isSearchFieldValid,
+    });
+  }
+
   render() {
-    const { loading, user } = this.state;
+    const { loading, user, inputSearch, searchButtonDisabled } = this.state;
 
     return (
       <div data-testid="page-search">
-        {
-          loading ? <Loading /> : (
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
             <Header user={ user } />
-          )
-        }
+            <SearchForm
+              handleChange={ this.handleChange }
+              inputSearch={ inputSearch }
+              searchButtonDisabled={ searchButtonDisabled }
+            />
+          </>
+        )}
       </div>
     );
   }
