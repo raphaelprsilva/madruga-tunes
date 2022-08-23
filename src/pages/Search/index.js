@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Header, Loading, SearchForm } from '../../components';
 import { getUser } from '../../services/userAPI';
+import searchAlbumsAPI from '../../services/searchAlbumsAPI';
 
 const MIN_SEARCH_LENGTH = 2;
 
@@ -13,12 +14,16 @@ class Search extends Component {
 
     this.state = {
       loading: false,
+      loadingAlbums: false,
+      searchedFor: '',
+      albums: [],
       user: {},
       inputSearch: '',
       searchButtonDisabled: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -38,10 +43,30 @@ class Search extends Component {
     this.updateState(target.name, target.value);
   }
 
+  async handleSubmit(event) {
+    event.preventDefault();
+    const { inputSearch } = this.state;
+
+    this.setState({ loadingAlbums: true }, async () => {
+      const response = await searchAlbumsAPI(inputSearch);
+      if (this.mounted) {
+        this.setState((prevState) => ({
+          searchedFor: prevState.inputSearch,
+          loadingAlbums: false,
+          inputSearch: '',
+          albums: response,
+        }));
+      }
+    });
+  }
+
   updateState(name, value) {
-    this.setState({
-      [name]: value,
-    }, () => this.validateField(value));
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => this.validateField(value),
+    );
   }
 
   validateField(value) {
@@ -53,7 +78,15 @@ class Search extends Component {
   }
 
   render() {
-    const { loading, user, inputSearch, searchButtonDisabled } = this.state;
+    const {
+      loading,
+      loadingAlbums,
+      searchedFor,
+      albums,
+      user,
+      inputSearch,
+      searchButtonDisabled,
+    } = this.state;
 
     return (
       <div data-testid="page-search">
@@ -63,7 +96,11 @@ class Search extends Component {
           <>
             <Header user={ user } />
             <SearchForm
+              loadingAlbums={ loadingAlbums }
+              albums={ albums }
+              searchedFor={ searchedFor }
               handleChange={ this.handleChange }
+              handleSubmit={ this.handleSubmit }
               inputSearch={ inputSearch }
               searchButtonDisabled={ searchButtonDisabled }
             />
