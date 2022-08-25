@@ -15,8 +15,8 @@ class Card extends Component {
           imageSrc={ album.artworkUrl100 }
         />
         <S.AttributesWrapper>
-          <p>{album.collectionName}</p>
-          <p>{album.artistName}</p>
+          <p data-testid="album-name">{album.collectionName}</p>
+          <p data-testid="artist-name">{album.artistName}</p>
         </S.AttributesWrapper>
       </S.CardWrapper>
     );
