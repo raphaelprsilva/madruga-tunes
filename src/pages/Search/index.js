@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Header, Loading, SearchForm } from '../../components';
+import { Header, SearchForm } from '../../components';
 import { getUser } from '../../services/userAPI';
 import searchAlbumsAPI from '../../services/searchAlbumsAPI';
 
@@ -13,7 +13,7 @@ class Search extends Component {
     super(props);
 
     this.state = {
-      loading: false,
+      loading: true,
       loadingAlbums: false,
       searchedFor: '',
       albums: [],
@@ -22,16 +22,13 @@ class Search extends Component {
       searchButtonDisabled: true,
     };
 
+    this.getUserData = this.getUserData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    this.mounted = true;
-    this.setState({ loading: true }, async () => {
-      const user = await getUser();
-      if (this.mounted) this.setState({ loading: false, user });
-    });
+    this.getUserData();
   }
 
   componentWillUnmount() {
@@ -57,6 +54,14 @@ class Search extends Component {
           albums: response,
         }));
       }
+    });
+  }
+
+  async getUserData() {
+    const userData = await getUser();
+    this.setState({
+      user: userData,
+      loading: false,
     });
   }
 
@@ -90,22 +95,16 @@ class Search extends Component {
 
     return (
       <div data-testid="page-search">
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <Header user={ user } />
-            <SearchForm
-              loadingAlbums={ loadingAlbums }
-              albums={ albums }
-              searchedFor={ searchedFor }
-              handleChange={ this.handleChange }
-              handleSubmit={ this.handleSubmit }
-              inputSearch={ inputSearch }
-              searchButtonDisabled={ searchButtonDisabled }
-            />
-          </>
-        )}
+        <Header user={ user } loading={ loading } />
+        <SearchForm
+          loadingAlbums={ loadingAlbums }
+          albums={ albums }
+          searchedFor={ searchedFor }
+          handleChange={ this.handleChange }
+          handleSubmit={ this.handleSubmit }
+          inputSearch={ inputSearch }
+          searchButtonDisabled={ searchButtonDisabled }
+        />
       </div>
     );
   }

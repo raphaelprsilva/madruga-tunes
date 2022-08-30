@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Header, Loading } from '../../components';
+import { Header } from '../../components';
 import { getUser } from '../../services/userAPI';
 
 class ProfileEdit extends Component {
-  mounted = false;
-
   constructor(props) {
     super(props);
 
@@ -12,25 +10,27 @@ class ProfileEdit extends Component {
       loading: false,
       user: {},
     };
+
+    this.getUserData = this.getUserData.bind(this);
   }
 
   componentDidMount() {
-    this.mounted = true;
-    this.setState({ loading: true }, async () => {
-      const user = await getUser();
-      if (this.mounted) this.setState({ loading: false, user });
-    });
+    this.getUserData();
   }
 
-  componentWillUnmount() {
-    this.mounted = false;
+  async getUserData() {
+    const userData = await getUser();
+    this.setState({
+      user: userData,
+      loading: false,
+    });
   }
 
   render() {
     const { loading, user } = this.state;
     return (
       <div data-testid="page-profile-edit">
-        { loading ? <Loading /> : <Header user={ user } /> }
+        <Header user={ user } loading={ loading } />
       </div>
     );
   }

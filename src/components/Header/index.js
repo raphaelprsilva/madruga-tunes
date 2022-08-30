@@ -8,21 +8,28 @@ import * as S from './styled';
 import Image from '../Image';
 import User from '../User';
 import Links from '../Links';
+import Loading from '../Loading';
 
 class Header extends Component {
   render() {
-    const { user } = this.props;
+    const { user, loading } = this.props;
     return (
-      <>
-        <S.HeaderWrapper data-testid="header-component">
-          <Image
-            imageSrc={ madrugraTunesLogo }
-            imageAlt="Logo Madruga Tunes White"
-          />
-          <User user={ user } />
-        </S.HeaderWrapper>
-        <Links />
-      </>
+      <div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <S.HeaderWrapper data-testid="header-component">
+              <Image
+                imageSrc={ madrugraTunesLogo }
+                imageAlt="Logo Madruga Tunes White"
+              />
+              <User user={ user } />
+            </S.HeaderWrapper>
+            <Links />
+          </>
+        )}
+      </div>
     );
   }
 }
@@ -34,6 +41,7 @@ Header.propTypes = {
     image: PropTypes.string,
     name: PropTypes.string,
   }).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default Header;
