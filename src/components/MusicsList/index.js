@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Card from '../Card';
 import MusicCard from '../MusicCard';
 
@@ -10,12 +11,19 @@ class MusicsList extends Component {
     const { songs, artistData } = this.props;
     return (
       <S.MusicListWrapper>
-        <Card album={ artistData } />
-        <S.SongsWrapper>
-          {songs.length
-            ? songs.map((song) => <MusicCard song={ song } key={ song.trackId } />)
-            : ''}
-        </S.SongsWrapper>
+        <>
+          <Card album={ artistData } />
+          <S.SongsWrapper>
+            {
+              songs.map((song) => (
+                <MusicCard
+                  song={ song }
+                  key={ song.trackId }
+                />
+              ))
+            }
+          </S.SongsWrapper>
+        </>
       </S.MusicListWrapper>
     );
   }

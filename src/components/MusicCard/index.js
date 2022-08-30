@@ -7,14 +7,16 @@ class MusicCard extends Component {
   render() {
     const { song } = this.props;
     return (
-      <S.MusicsWrapper data-testid="audio-component" key={ song.trackId }>
+      <S.MusicsWrapper key={ song.trackId }>
         <p>{song.trackName}</p>
-        <audio data-testid="audio-component" src={ song.previewUrl } controls>
-          <track kind="captions" />
-          O seu navegador não suporta o elemento
-          <code>audio</code>
-          .
-        </audio>
+        <div>
+          <audio data-testid="audio-component" src={ song.previewUrl } controls>
+            <track kind="captions" />
+            O seu navegador não suporta o elemento
+            <code>audio</code>
+            .
+          </audio>
+        </div>
       </S.MusicsWrapper>
     );
   }

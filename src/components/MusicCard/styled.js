@@ -7,6 +7,7 @@ export const MusicsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 625px;
+  min-height: 128px;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 

@@ -7,39 +7,31 @@ import { getUser } from '../../services/userAPI';
 import getMusics from '../../services/musicsAPI';
 
 class Album extends Component {
-  mounted = false;
-
   constructor(props) {
     super(props);
 
     this.state = {
       loading: true,
       user: {},
-      artistData: null,
-      songs: null,
+      albumData: [],
+      artistData: {},
     };
 
+    this.getUserData = this.getUserData.bind(this);
     this.getSongs = this.getSongs.bind(this);
   }
 
   async componentDidMount() {
-    this.mounted = true;
-    this.setState({ loading: true }, async () => {
-      const { songs, artistData } = await this.getSongs();
-      const user = await getUser();
-      if (this.mounted) {
-        this.setState({
-          loading: false,
-          user,
-          songs,
-          artistData,
-        });
-      }
-    });
+    this.getUserData();
+    this.getSongs();
   }
 
-  componentWillUnmount() {
-    this.mounted = false;
+  async getUserData() {
+    const userData = await getUser();
+    this.setState({
+      user: userData,
+      loading: false,
+    });
   }
 
   async getSongs() {
@@ -49,26 +41,21 @@ class Album extends Component {
     const albumId = params.id;
     const albumData = await getMusics(albumId);
     const artistData = albumData[0];
-    albumData.splice(0, 1);
-    const songs = albumData;
-    return {
-      songs,
-      artistData,
-    };
+    this.setState({ albumData, artistData });
   }
 
   render() {
-    const { loading, user, artistData, songs } = this.state;
+    const { loading, user, albumData, artistData } = this.state;
+    const songs = albumData.filter((song, index) => index !== 0);
+
     return (
       <div data-testid="page-album">
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <Header user={ user } />
+        <Header user={ user } loading={ loading } />
+        {
+          loading ? <Loading /> : (
             <MusicsList songs={ songs } artistData={ artistData } />
-          </>
-        )}
+          )
+        }
       </div>
     );
   }
