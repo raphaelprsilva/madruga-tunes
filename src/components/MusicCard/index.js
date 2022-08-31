@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import { addSong } from '../../services/favoriteSongsAPI';
+import AudioPlayer from '../AudioPlayer';
+import InputFavoriteSong from '../InputFavoriteSong';
 import Loading from '../Loading';
 
 import * as S from './styled';
@@ -41,28 +43,12 @@ class MusicCard extends Component {
         {
           loading ? <Loading /> : (
             <>
-              <p>{song.trackName}</p>
-              <div>
-                <audio data-testid="audio-component" src={ song.previewUrl } controls>
-                  <track kind="captions" />
-                  O seu navegador não suporta o elemento
-                  <code>audio</code>
-                  .
-                </audio>
-              </div>
-              <div>
-                <label htmlFor={ song.trackId }>
-                  Favorita
-                  <input
-                    onChange={ this.handleChange }
-                    checked={ inputFavoriteSong }
-                    data-testid={ `checkbox-music-${song.trackId}` }
-                    type="checkbox"
-                    name="inputFavoriteSong"
-                    id={ song.trackId }
-                  />
-                </label>
-              </div>
+              <AudioPlayer song={ song } />
+              <InputFavoriteSong
+                song={ song }
+                inputFavoriteSong={ inputFavoriteSong }
+                handleChange={ this.handleChange }
+              />
             </>
           )
         }

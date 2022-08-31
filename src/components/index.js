@@ -6,6 +6,7 @@ import User from './User';
 import Links from './Links';
 import SearchForm from './SearchForm';
 import MusicsList from './MusicsList';
+import AudioPlayer from './AudioPlayer';
 
 export {
   LoginForm,
@@ -16,4 +17,5 @@ export {
   Links,
   SearchForm,
   MusicsList,
+  AudioPlayer,
 };
