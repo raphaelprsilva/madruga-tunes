@@ -47,7 +47,6 @@ class Album extends Component {
   render() {
     const { loading, user, albumData, artistData } = this.state;
     const songs = albumData.filter((song, index) => index !== 0);
-
     return (
       <div data-testid="page-album">
         <Header user={ user } loading={ loading } />

@@ -5,18 +5,18 @@ import * as S from './styled';
 
 class InputFavoriteSong extends Component {
   render() {
-    const { song, inputFavoriteSong, handleChange } = this.props;
+    const { trackId, inputFavoriteSong, handleChange } = this.props;
     return (
       <S.FavoriteWrapper>
-        <S.LabelWrapper htmlFor={ song.trackId }>
+        <S.LabelWrapper htmlFor={ trackId }>
           Favorita
           <input
             onChange={ handleChange }
             checked={ inputFavoriteSong }
-            data-testid={ `checkbox-music-${song.trackId}` }
+            data-testid={ `checkbox-music-${trackId}` }
             type="checkbox"
             name="inputFavoriteSong"
-            id={ song.trackId }
+            id={ trackId }
           />
         </S.LabelWrapper>
       </S.FavoriteWrapper>
@@ -25,9 +25,7 @@ class InputFavoriteSong extends Component {
 }
 
 InputFavoriteSong.propTypes = {
-  song: PropTypes.shape({
-    trackId: PropTypes.number,
-  }).isRequired,
+  trackId: PropTypes.number.isRequired,
   inputFavoriteSong: PropTypes.bool.isRequired,
   handleChange: PropTypes.func.isRequired,
 };

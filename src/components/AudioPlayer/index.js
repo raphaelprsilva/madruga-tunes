@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 class AudioPlayer extends Component {
   render() {
-    const { song } = this.props;
+    const { trackName, previewUrl } = this.props;
     return (
       <>
-        <p>{song.trackName}</p>
+        <p>{trackName}</p>
         <div>
-          <audio data-testid="audio-component" src={ song.previewUrl } controls>
+          <audio data-testid="audio-component" src={ previewUrl } controls>
             <track kind="captions" />
             O seu navegador não suporta o elemento
             <code>audio</code>
@@ -21,10 +21,8 @@ class AudioPlayer extends Component {
 }
 
 AudioPlayer.propTypes = {
-  song: PropTypes.shape({
-    trackName: PropTypes.string,
-    previewUrl: PropTypes.string,
-  }).isRequired,
+  trackName: PropTypes.string.isRequired,
+  previewUrl: PropTypes.string.isRequired,
 };
 
 export default AudioPlayer;
