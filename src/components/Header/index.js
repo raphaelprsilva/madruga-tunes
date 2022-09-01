@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import madrugraTunesLogo from '../../images/madruga_tunes_logo_white.svg';
 
@@ -10,9 +10,36 @@ import User from '../User';
 import Links from '../Links';
 import Loading from '../Loading';
 
+import { getUser } from '../../services/userAPI';
+
 class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: {},
+      loading: false,
+    };
+
+    this.getUserData = this.getUserData.bind(this);
+  }
+
+  componentDidMount() {
+    this.getUserData();
+  }
+
+  async getUserData() {
+    this.setState({ loading: true }, async () => {
+      const userData = await getUser();
+      this.setState({
+        loading: false,
+        user: userData,
+      });
+    });
+  }
+
   render() {
-    const { user, loading } = this.props;
+    const { user, loading } = this.state;
     return (
       <div>
         {loading ? (
@@ -34,14 +61,13 @@ class Header extends Component {
   }
 }
 
-Header.propTypes = {
-  user: PropTypes.shape({
-    description: PropTypes.string,
-    email: PropTypes.string,
-    image: PropTypes.string,
-    name: PropTypes.string,
-  }).isRequired,
-  loading: PropTypes.bool.isRequired,
-};
+// Header.propTypes = {
+//   user: PropTypes.shape({
+//     description: PropTypes.string,
+//     email: PropTypes.string,
+//     image: PropTypes.string,
+//     name: PropTypes.string,
+//   }).isRequired,
+// };
 
 export default Header;
