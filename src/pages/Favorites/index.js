@@ -1,37 +1,80 @@
 import React, { Component } from 'react';
 
-import { Header } from '../../components';
-import { getUser } from '../../services/userAPI';
+import { Header, Loading } from '../../components';
+import {
+  addSong,
+  getFavoriteSongs,
+  removeSong,
+} from '../../services/favoriteSongsAPI';
+import MusicCard from '../../components/MusicCard';
 
 class Favorites extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: true,
-      user: {},
+      loadingFavoriteSongs: false,
+      userFavoriteSongs: [],
     };
 
-    this.getUserData = this.getUserData.bind(this);
+    this.getSavedSongs = this.getSavedSongs.bind(this);
+    this.handleFavoriteSongs = this.handleFavoriteSongs.bind(this);
   }
 
   componentDidMount() {
-    this.getUserData();
+    this.getSavedSongs();
   }
 
-  async getUserData() {
-    const userData = await getUser();
+  async handleFavoriteSongs(event) {
+    const {
+      target: { checked, id },
+    } = event;
+    const { userFavoriteSongs } = this.state;
+    console.log('📌userFavoriteSongs:', userFavoriteSongs);
+    const song = userFavoriteSongs.find(({ trackId }) => trackId === +id);
+
+    this.setState({ loadingFavoriteSongs: true }, async () => {
+      if (checked) {
+        await addSong(song);
+      } else {
+        await removeSong(song);
+      }
+      const favoritesSongs = await getFavoriteSongs();
+      this.setState({
+        userFavoriteSongs: favoritesSongs,
+        loadingFavoriteSongs: false,
+      });
+    });
+  }
+
+  async getSavedSongs() {
+    this.setState({ loadingFavoriteSongs: true });
+    const savedSongs = await getFavoriteSongs();
     this.setState({
-      user: userData,
-      loading: false,
+      userFavoriteSongs: savedSongs,
+      loadingFavoriteSongs: false,
     });
   }
 
   render() {
-    const { loading, user } = this.state;
+    const { loadingFavoriteSongs, userFavoriteSongs } = this.state;
     return (
       <div data-testid="page-favorites">
-        <Header user={ user } loading={ loading } />
+        <Header />
+        {loadingFavoriteSongs ? (
+          <Loading />
+        ) : (
+          userFavoriteSongs.map((userFavoriteSong) => (
+            <MusicCard
+              song={ userFavoriteSong }
+              key={ userFavoriteSong.trackId }
+              checked={ userFavoriteSongs.some(
+                (favoriteSong) => +favoriteSong.trackId === +userFavoriteSong.trackId,
+              ) }
+              handleFavoriteSongs={ this.handleFavoriteSongs }
+            />
+          ))
+        )}
       </div>
     );
   }
