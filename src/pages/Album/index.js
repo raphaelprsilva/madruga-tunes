@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Header, Loading, MusicsList } from '../../components';
 
-import { getUser } from '../../services/userAPI';
+import { addSong, removeSong, getFavoriteSongs } from '../../services/favoriteSongsAPI';
 import getMusics from '../../services/musicsAPI';
 
 class Album extends Component {
@@ -11,26 +11,38 @@ class Album extends Component {
     super(props);
 
     this.state = {
-      loading: true,
-      user: {},
+      loading: false,
       albumData: [],
       artistData: {},
+      favoritesSongs: [],
     };
 
-    this.getUserData = this.getUserData.bind(this);
     this.getSongs = this.getSongs.bind(this);
+    this.getUserFavoriteSongs = this.getUserFavoriteSongs.bind(this);
+    this.handleFavoriteSongs = this.handleFavoriteSongs.bind(this);
   }
 
   async componentDidMount() {
-    this.getUserData();
     this.getSongs();
+    this.getUserFavoriteSongs();
   }
 
-  async getUserData() {
-    const userData = await getUser();
-    this.setState({
-      user: userData,
-      loading: false,
+  async handleFavoriteSongs(event) {
+    const { target: { checked, id } } = event;
+    const { albumData } = this.state;
+    const song = albumData.find(({ trackId }) => trackId === +id);
+
+    this.setState({ loading: true }, async () => {
+      if (checked) {
+        await addSong(song);
+      } else {
+        await removeSong(song);
+      }
+      const favoritesSongs = await getFavoriteSongs();
+      this.setState({
+        favoritesSongs,
+        loading: false,
+      });
     });
   }
 
@@ -44,15 +56,26 @@ class Album extends Component {
     this.setState({ albumData, artistData });
   }
 
+  async getUserFavoriteSongs() {
+    const favoritesSongs = await getFavoriteSongs();
+    const hasFavorites = !favoritesSongs ? [] : favoritesSongs;
+    this.setState({ favoritesSongs: hasFavorites });
+  }
+
   render() {
-    const { loading, user, albumData, artistData } = this.state;
+    const { loading, albumData, artistData, favoritesSongs } = this.state;
     const songs = albumData.filter((song, index) => index !== 0);
     return (
       <div data-testid="page-album">
-        <Header user={ user } loading={ loading } />
+        <Header />
         {
           loading ? <Loading /> : (
-            <MusicsList songs={ songs } artistData={ artistData } />
+            <MusicsList
+              songs={ songs }
+              favoritesSongs={ favoritesSongs }
+              artistData={ artistData }
+              handleFavoriteSongs={ this.handleFavoriteSongs }
+            />
           )
         }
       </div>
