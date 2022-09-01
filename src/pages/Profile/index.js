@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Header } from '../../components';
+import { Header, Loading } from '../../components';
 import { getUser } from '../../services/userAPI';
 
 class Profile extends Component {
@@ -8,8 +9,8 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      loading: true,
-      user: {},
+      userData: {},
+      loading: false,
     };
 
     this.getUserData = this.getUserData.bind(this);
@@ -20,18 +21,38 @@ class Profile extends Component {
   }
 
   async getUserData() {
-    const userData = await getUser();
-    this.setState({
-      user: userData,
-      loading: false,
+    this.setState({ loading: true }, async () => {
+      const userData = await getUser();
+      this.setState({ loading: false, userData });
     });
   }
 
   render() {
-    const { loading, user } = this.state;
+    const { loading, userData } = this.state;
+    const { name, email, image, description } = userData;
     return (
       <div data-testid="page-profile">
-        <Header user={ user } loading={ loading } />
+        <Header />
+        {
+          loading ? <Loading /> : (
+            <section>
+              <img data-testid="profile-image" src={ image } alt={ `${name}` } />
+              <Link to="/profile/edit">Editar perfil</Link>
+              <div>
+                <p>Nome</p>
+                <p>{name}</p>
+              </div>
+              <div>
+                <p>E-mail</p>
+                <p>{email}</p>
+              </div>
+              <div>
+                <p>Descrição</p>
+                <p>{description}</p>
+              </div>
+            </section>
+          )
+        }
       </div>
     );
   }
