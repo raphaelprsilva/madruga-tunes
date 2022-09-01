@@ -8,15 +8,16 @@ import * as S from './styled';
 class Card extends Component {
   render() {
     const { album } = this.props;
+    const { collectionName, artworkUrl100, artistName } = album;
     return (
       <S.CardWrapper>
         <Image
-          imageAlt={ `${album.collectionName} album cover` }
-          imageSrc={ album.artworkUrl100 }
+          imageAlt={ `${collectionName} album cover` }
+          imageSrc={ artworkUrl100 }
         />
         <S.AttributesWrapper>
-          <p data-testid="album-name">{album.collectionName}</p>
-          <p data-testid="artist-name">{album.artistName}</p>
+          <p data-testid="album-name">{collectionName}</p>
+          <p data-testid="artist-name">{artistName}</p>
         </S.AttributesWrapper>
       </S.CardWrapper>
     );
