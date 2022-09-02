@@ -7,6 +7,8 @@ import Links from './Links';
 import SearchForm from './SearchForm';
 import MusicsList from './MusicsList';
 import AudioPlayer from './AudioPlayer';
+import UserProfile from './UserProfile';
+import EditProfileForm from './EditProfileForm';
 
 export {
   LoginForm,
@@ -18,4 +20,6 @@ export {
   SearchForm,
   MusicsList,
   AudioPlayer,
+  UserProfile,
+  EditProfileForm,
 };

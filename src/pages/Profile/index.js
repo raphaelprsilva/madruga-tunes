@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
-import { Header, Loading } from '../../components';
+import { Header, Loading, UserProfile } from '../../components';
 import { getUser } from '../../services/userAPI';
 
 class Profile extends Component {
@@ -33,26 +32,16 @@ class Profile extends Component {
     return (
       <div data-testid="page-profile">
         <Header />
-        {
-          loading ? <Loading /> : (
-            <section>
-              <img data-testid="profile-image" src={ image } alt={ `${name}` } />
-              <Link to="/profile/edit">Editar perfil</Link>
-              <div>
-                <p>Nome</p>
-                <p>{name}</p>
-              </div>
-              <div>
-                <p>E-mail</p>
-                <p>{email}</p>
-              </div>
-              <div>
-                <p>Descrição</p>
-                <p>{description}</p>
-              </div>
-            </section>
-          )
-        }
+        {loading ? (
+          <Loading />
+        ) : (
+          <UserProfile
+            name={ name }
+            email={ email }
+            image={ image }
+            description={ description }
+          />
+        )}
       </div>
     );
   }
