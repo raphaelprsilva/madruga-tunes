@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 
 import { Header, Loading } from '../../components';
+import MusicCard from '../../components/MusicCard';
+
 import {
   addSong,
   getFavoriteSongs,
   removeSong,
 } from '../../services/favoriteSongsAPI';
-import MusicCard from '../../components/MusicCard';
+
+import * as S from './styled';
 
 class Favorites extends Component {
   constructor(props) {
@@ -30,7 +33,6 @@ class Favorites extends Component {
       target: { checked, id },
     } = event;
     const { userFavoriteSongs } = this.state;
-    console.log('📌userFavoriteSongs:', userFavoriteSongs);
     const song = userFavoriteSongs.find(({ trackId }) => trackId === +id);
 
     this.setState({ loadingFavoriteSongs: true }, async () => {
@@ -64,16 +66,20 @@ class Favorites extends Component {
         {loadingFavoriteSongs ? (
           <Loading />
         ) : (
-          userFavoriteSongs.map((userFavoriteSong) => (
-            <MusicCard
-              song={ userFavoriteSong }
-              key={ userFavoriteSong.trackId }
-              checked={ userFavoriteSongs.some(
-                (favoriteSong) => +favoriteSong.trackId === +userFavoriteSong.trackId,
-              ) }
-              handleFavoriteSongs={ this.handleFavoriteSongs }
-            />
-          ))
+          <S.FavoritesWrapper>
+            {
+              userFavoriteSongs.map((userFavoriteSong) => (
+                <MusicCard
+                  song={ userFavoriteSong }
+                  key={ userFavoriteSong.trackId }
+                  checked={ userFavoriteSongs.some(
+                    (favoriteSong) => +favoriteSong.trackId === +userFavoriteSong.trackId,
+                  ) }
+                  handleFavoriteSongs={ this.handleFavoriteSongs }
+                />
+              ))
+            }
+          </S.FavoritesWrapper>
         )}
       </div>
     );
