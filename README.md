@@ -97,7 +97,7 @@ O projeto ainda precisa de algumas melhorias de layout (`CSS`), mas nada que int
 
 ## 🔗 Link para acessar o projeto
 
-<a href="https://madruga-tunes.elraphael.com.br/" target="_blank" rel="noopener">Madruga Tunes Project</a>
+<a href="https://www.madruga-tunes.elraphael.com.br" target="_blank" rel="noopener">Madruga Tunes Project</a>
 
 ---
 
