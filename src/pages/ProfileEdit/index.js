@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Header, Loading } from '../../components';
+import { EditProfileForm, Header, Loading } from '../../components';
 import { getUser, updateUser } from '../../services/userAPI';
 
 class ProfileEdit extends Component {
@@ -112,58 +112,15 @@ class ProfileEdit extends Component {
         {loading ? (
           <Loading />
         ) : (
-          <form onSubmit={ this.handleSubmit }>
-            <label htmlFor="userName">
-              Name
-              <input
-                name="userName"
-                onChange={ this.handleChange }
-                type="text"
-                data-testid="edit-input-name"
-                id="userName"
-                value={ userName }
-              />
-            </label>
-            <label htmlFor="userEmail">
-              E-mail
-              <input
-                name="userEmail"
-                onChange={ this.handleChange }
-                type="email"
-                data-testid="edit-input-email"
-                id="userEmail"
-                value={ userEmail }
-              />
-            </label>
-            <label htmlFor="userDescription">
-              Descrição
-              <textarea
-                name="userDescription"
-                onChange={ this.handleChange }
-                data-testid="edit-input-description"
-                id="userDescription"
-                value={ userDescription }
-              />
-            </label>
-            <label htmlFor="userProfileImageUrl">
-              Imagem de Perfil
-              <input
-                name="userProfileImageUrl"
-                onChange={ this.handleChange }
-                type="text"
-                data-testid="edit-input-image"
-                id="userProfileImageUrl"
-                value={ userProfileImageUrl }
-              />
-            </label>
-            <button
-              disabled={ isDisabled }
-              type="submit"
-              data-testid="edit-button-save"
-            >
-              Editar perfil
-            </button>
-          </form>
+          <EditProfileForm
+            handleChange={ this.handleChange }
+            handleSubmit={ this.handleSubmit }
+            isDisabled={ isDisabled }
+            userDescription={ userDescription }
+            userEmail={ userEmail }
+            userName={ userName }
+            userProfileImageUrl={ userProfileImageUrl }
+          />
         )}
       </div>
     );
