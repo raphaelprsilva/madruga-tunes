@@ -13,4 +13,12 @@ export const HeaderWrapper = styled.header`
     width: 182px;
     height: 95px;
   }
+
+  a:link {
+    text-decoration: none;
+  }
+
+  a:visited {
+    text-decoration: none;
+  }
 `;
