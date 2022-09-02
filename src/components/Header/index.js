@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import madrugraTunesLogo from '../../images/madruga_tunes_logo_white.svg';
 
@@ -47,11 +47,15 @@ class Header extends Component {
         ) : (
           <>
             <S.HeaderWrapper data-testid="header-component">
-              <Image
-                imageSrc={ madrugraTunesLogo }
-                imageAlt="Logo Madruga Tunes White"
-              />
-              <User user={ user } />
+              <Link to="/search">
+                <Image
+                  imageSrc={ madrugraTunesLogo }
+                  imageAlt="Logo Madruga Tunes White"
+                />
+              </Link>
+              <Link to="/profile">
+                <User user={ user } />
+              </Link>
             </S.HeaderWrapper>
             <Links />
           </>
@@ -60,14 +64,5 @@ class Header extends Component {
     );
   }
 }
-
-// Header.propTypes = {
-//   user: PropTypes.shape({
-//     description: PropTypes.string,
-//     email: PropTypes.string,
-//     image: PropTypes.string,
-//     name: PropTypes.string,
-//   }).isRequired,
-// };
 
 export default Header;
