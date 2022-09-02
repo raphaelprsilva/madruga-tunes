@@ -8,17 +8,15 @@ class InputFavoriteSong extends Component {
     const { trackId, isFavoriteSong, handleChange } = this.props;
     return (
       <S.FavoriteWrapper>
-        <S.LabelWrapper htmlFor={ trackId }>
-          Favorita
-          <input
-            onChange={ handleChange }
-            checked={ isFavoriteSong }
-            data-testid={ `checkbox-music-${trackId}` }
-            type="checkbox"
-            name="isFavoriteSong"
-            id={ trackId }
-          />
-        </S.LabelWrapper>
+        <S.Label htmlFor={ trackId }>Favorita</S.Label>
+        <S.Input
+          onChange={ handleChange }
+          checked={ isFavoriteSong }
+          data-testid={ `checkbox-music-${trackId}` }
+          type="checkbox"
+          name="isFavoriteSong"
+          id={ trackId }
+        />
       </S.FavoriteWrapper>
     );
   }
