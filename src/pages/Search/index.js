@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { Header, Loading, SearchForm } from '../../components';
-import { getUser } from '../../services/userAPI';
 import searchAlbumsAPI from '../../services/searchAlbumsAPI';
 
 const MIN_SEARCH_LENGTH = 2;
@@ -11,23 +10,16 @@ class Search extends Component {
     super(props);
 
     this.state = {
-      loading: true,
-      loadingAlbums: false,
+      loading: false,
       searchedFor: '',
       albums: [],
-      user: {},
       inputSearch: '',
       searchButtonDisabled: true,
     };
 
     this.getArtistData = this.getArtistData.bind(this);
-    this.getUserData = this.getUserData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    this.getUserData();
   }
 
   handleChange(event) {
@@ -43,23 +35,15 @@ class Search extends Component {
 
   async getArtistData() {
     const { inputSearch } = this.state;
-    this.setState({ loadingAlbums: true }, async () => {
+    this.setState({ loading: true }, async () => {
       const response = await searchAlbumsAPI(inputSearch);
 
       this.setState({
         searchedFor: inputSearch,
-        loadingAlbums: false,
+        loading: false,
         inputSearch: '',
         albums: response,
       });
-    });
-  }
-
-  async getUserData() {
-    const userData = await getUser();
-    this.setState({
-      user: userData,
-      loading: false,
     });
   }
 
@@ -83,30 +67,26 @@ class Search extends Component {
   render() {
     const {
       loading,
-      loadingAlbums,
       searchedFor,
       albums,
-      user,
       inputSearch,
       searchButtonDisabled,
     } = this.state;
 
     return (
       <div data-testid="page-search">
+        <Header />
         {
           loading ? <Loading /> : (
-            <>
-              <Header user={ user } loading={ loading } />
-              <SearchForm
-                loadingAlbums={ loadingAlbums }
-                albums={ albums }
-                searchedFor={ searchedFor }
-                handleChange={ this.handleChange }
-                handleSubmit={ this.handleSubmit }
-                inputSearch={ inputSearch }
-                searchButtonDisabled={ searchButtonDisabled }
-              />
-            </>
+            <SearchForm
+              loadingAlbums={ loading }
+              albums={ albums }
+              searchedFor={ searchedFor }
+              handleChange={ this.handleChange }
+              handleSubmit={ this.handleSubmit }
+              inputSearch={ inputSearch }
+              searchButtonDisabled={ searchButtonDisabled }
+            />
           )
         }
       </div>
